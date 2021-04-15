@@ -1,49 +1,25 @@
-const socket = io();
-
-socket.on('add-circle', function(data) {
-  addCircle(data);
-});
-
-socket.on('clear-circles', function() {
-  circles.innerHTML = '';
-});
-
-socket.on('update-player-list', function(data) {
-  players.innerHTML = data.map(player => `<li>${player}</li>`).join('');
-});
-
 const circles = document.getElementById('circles');
-const players = document.getElementById('players');
 let initials = '';
 
 // Listen for clicks anywhere in the "section"
 circles.addEventListener('click', function(evt) {
-  socket.emit('add-circle', {
-    initials,
-    x: evt.clientX,
-    y: evt.clientY,
-    dia: randomBetween(20, 120),
-    rgba: getRandomRGBA()
-  });
+  addCircle(evt.clientX, evt.clientY, randomBetween(10,125), getRandomRGBA());
 });
 
 document.querySelector('button').addEventListener('click', function() {
-  socket.emit('clear-circles');
+  circles.innerHTML = '';
 });
 
 do {
   initials = getInitials();
 } while (initials.length < 2 || initials.length > 3);
 
-// We have the initials, time to register with the server
-socket.emit('register-player', initials);
-
 function getInitials() {
   const input = prompt("Please enter your initials");
   return input ? input.toUpperCase() : '';
 }
 
-function addCircle({x, y, dia, rgba, initials}) {
+function addCircle(x, y, dia, rgba) {
   const el = document.createElement('div');
   el.style.left = x - Math.floor(dia / 2 + 0.5) + 'px';
   el.style.top = y - Math.floor(dia / 2 + 0.5) + 'px';
