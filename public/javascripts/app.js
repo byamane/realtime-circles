@@ -3,8 +3,9 @@ let initials = '';
 
 // get our connection to the socket.io server
 const socket = io();
+// listen to the server for the `add-circle` event
 socket.on('add-circle', function (data) {
-  console.log(data)
+  addCircle(data)
 })
 
 // Listen for clicks anywhere in the "section"
@@ -31,7 +32,7 @@ function getInitials() {
   return input ? input.toUpperCase() : '';
 }
 
-function addCircle(x, y, dia, rgba) {
+function addCircle({x, y, dia, rgba, initials}) {
   const el = document.createElement('div');
   el.style.left = x - Math.floor(dia / 2 + 0.5) + 'px';
   el.style.top = y - Math.floor(dia / 2 + 0.5) + 'px';
