@@ -1,6 +1,10 @@
 const circles = document.getElementById('circles');
 let initials = '';
 
+// get our connection to the socket.io server
+const socket = io();
+console.log(socket);
+
 // Listen for clicks anywhere in the "section"
 circles.addEventListener('click', function(evt) {
   addCircle(evt.clientX, evt.clientY, randomBetween(10,125), getRandomRGBA());
