@@ -3,11 +3,19 @@ let initials = '';
 
 // get our connection to the socket.io server
 const socket = io();
-console.log(socket);
+socket.on('add-circle', function (data) {
+  console.log(data)
+})
 
 // Listen for clicks anywhere in the "section"
 circles.addEventListener('click', function(evt) {
-  addCircle(evt.clientX, evt.clientY, randomBetween(10,125), getRandomRGBA());
+  socket.emit('add-circle', {
+    initials: initials,
+    x: evt.clientX,
+    y: evt.clientY,
+    dia: randomBetween(10, 100),
+    rgba: getRandomRGBA()
+  })
 });
 
 document.querySelector('button').addEventListener('click', function() {
